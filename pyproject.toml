@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "readme-lies"
+version = "0.1.0"
+description = "Your README is lying. Catches docs that reference scripts, files, anchors and symbols that no longer exist."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Sandeep Sirodia" }]
+requires-python = ">=3.9"
+keywords = ["documentation", "readme", "lint", "ci", "markdown", "docs-drift"]
+classifiers = ["Programming Language :: Python :: 3", "Topic :: Documentation", "Environment :: Console"]
+
+[project.urls]
+Homepage = "https://github.com/sandeepsirodia/readme-lies"
+
+[project.scripts]
+readme-lies = "readme_lies:main"
+
+[tool.setuptools]
+py-modules = ["readme_lies"]
