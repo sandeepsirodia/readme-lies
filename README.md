@@ -15,7 +15,7 @@ Docs rot silently. The script got renamed, the heading got reworded, the functio
 
 ## It finds real bugs in popular repos
 
-I ran it on 27 well-known repositories. Every finding below was checked by hand, and every one is a real broken reference on `main`:
+I ran it on 27 well-known repositories. Every finding below was checked by hand, and every one is a real broken reference on `main`: 11 in 4 repos:
 
 | Repo | Real lies found | Example |
 |---|---|---|
@@ -23,9 +23,8 @@ I ran it on 27 well-known repositories. Every finding below was checked by hand,
 | pydantic/pydantic | 1 | link to `#customise-settings-sources` on a page that's now a stub |
 | astral-sh/uv | 1 | `init.md#unpackaged-applications`: no such section |
 | fastapi/typer | 2 | root README links `tutorial/install.md`, which lives in `docs/` |
-| junegunn/fzf | 2 | README says `fzf_compgen_path()`; the function is `_fzf_compgen_path` |
 
-**Precision:** on 12 repos it had never seen during development, 13 of 15 findings were real (87%). The two false alarms (dunder names inside code-span headings) are now fixed and covered by a regression test, like every other false alarm found so far.
+**Precision:** on 12 repos it had never seen during development, 10 of 12 findings were real (83%). The two false alarms (dunder names inside code-span headings) are now fixed and covered by a regression test, like every other false alarm found so far.
 
 ## Install
 

@@ -5,7 +5,7 @@ branding:
   color: red
 inputs:
   paths:
-    description: Markdown files to check (default: README.md + docs/**/*.md)
+    description: "Markdown files to check (default: README.md + docs/**/*.md)"
     required: false
     default: ""
 runs:

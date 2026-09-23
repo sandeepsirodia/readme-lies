@@ -2,6 +2,7 @@
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -228,6 +229,20 @@ class TestNoFalsePositives(unittest.TestCase):
         r = Repo({"package.json": PKG, "README.md": "x\n", "docs/bash.md": "`npm run build-app`\n",
                   "docs/contributing.md": "`npm run nope`\n"})
         self.assertEqual([f.file for f in r.lies()], ["docs/contributing.md"])
+
+    def test_history_match_is_whole_word(self):  # `_fzf_x` in history must not count as `fzf_x` having existed
+        r = Repo({"lib.sh": "_helper_path() {}\n", "README.md": "Call `helper_path()`.\n"})
+        git(r.root, "init", "-q")
+        git(r.root, "add", ".")
+        git(r.root, "commit", "-qm", "init")
+        self.assertEqual(r.lies(), [])
+
+    def test_action_manifest_is_valid_yaml_shape(self):
+        # no unquoted "key: value" inside a plain scalar (broke the Action once)
+        for line in open(os.path.join(ROOT, "action.yml"), encoding="utf-8"):
+            m = re.match(r"^\s*[\w-]+:\s+([^\"'].*)$", line)
+            if m:
+                self.assertNotRegex(m.group(1), r":\s", line)
 
     def test_symbol_defined_in_any_tracked_file(self):  # fzf: function lives in completion.zsh
         r = Repo({"shell/completion.zsh": "_fzf_compgen_path() {}\n", "README.md": "Override `_fzf_compgen_path()`.\n"})

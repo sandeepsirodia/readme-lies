@@ -158,11 +158,14 @@ class Repo:
         return self._ignored[path]
 
     def in_history(self, word):
-        """True if `word` ever appeared in non-Markdown files in git history."""
+        """True if `word` ever appeared, as a whole word, in non-Markdown files in git history.
+        `git log -S` matches substrings (`_fzf_x` contains `fzf_x`), so confirm in the patches."""
         if word not in self._history:
             try:
-                out = self._git("log", "--all", "-S", word, "--format=%h", "-1", "--", ".", ":(exclude)*.md")
-                self._history[word] = bool(out.stdout.strip())
+                out = self._git("log", "--all", "-S", word, "-n", "20", "-p", "--format=", "--",
+                                ".", ":(exclude)*.md", ":(exclude)*.markdown")
+                rx = re.compile(r"^[+-].*(?<![\w$])%s(?![\w$])" % re.escape(word), re.M)
+                self._history[word] = rx.search(out.stdout) is not None
             except (OSError, subprocess.SubprocessError):
                 self._history[word] = False
         return self._history[word]
