@@ -282,7 +282,8 @@ def check_commands(repo, cmd, line, rel, out, scripts=True):
                                    "no \"%s\" target in %s" % (t, "Makefile" if tool == "make" else "justfile")))
     for b in repo.bins:
         for m in re.finditer(r"(?:^|[\s;&|(])%s((?:\s+\S+)*)" % re.escape(b), cmd):
-            for flag in RE_FLAG.findall(m.group(1)):
+            args = re.sub(r"'[^']*'|\"[^\"]*\"", " ", m.group(1))  # flags inside quotes belong to other programs
+            for flag in RE_FLAG.findall(args):
                 if flag in ("--help", "--version"):
                     continue
                 bare = flag[2:]
@@ -402,9 +403,12 @@ def default_docs(root):
 def run(root=".", paths=None):
     repo = Repo(root)
     files = [os.path.abspath(p) for p in paths] if paths else default_docs(repo.root)
-    cache, findings = {}, []
+    cache, findings, seen = {}, [], set()
     for p in files:
-        findings += check_file(repo, p, cache)
+        for f in check_file(repo, p, cache):
+            if (f.file, f.line, f.claim) not in seen:
+                seen.add((f.file, f.line, f.claim))
+                findings.append(f)
     return findings
 
 

@@ -208,6 +208,16 @@ class TestNoFalsePositives(unittest.TestCase):
     def test_dot_slash_path_may_mean_readers_project(self):  # uv: `./pyproject.toml`
         self.assertEqual(Repo({"README.md": "Edit `./pyproject.toml`.\n"}).lies(), [])
 
+    def test_flags_inside_quoted_args_belong_to_other_programs(self):  # lucky README: lucky './eval.sh --model a'
+        r = Repo({"pyproject.toml": '[project]\nname = "t"\n\n[project.scripts]\nlucky = "t:main"\n',
+                  "t.py": "p.add_argument('-n')\n",
+                  "README.md": "```bash\nlucky -n 20 './eval.sh --model a' \"./b --fast\"\nlucky --nope\n```\n"})
+        self.assertEqual([f.claim for f in r.lies()], ["`lucky --nope`"])
+
+    def test_same_finding_reported_once(self):
+        r = Repo({"package.json": PKG, "README.md": "`npm run dev` and again `npm run dev`\n"})
+        self.assertEqual(len(r.lies()), 1)
+
     def test_dunder_in_code_span_heading(self):  # pydantic: ### Implementing `__get_schema__`
         self.assertEqual(Repo({"README.md": "[a](#implementing-__get_schema__)\n\n### Implementing `__get_schema__`\n"}).lies(), [])
 
