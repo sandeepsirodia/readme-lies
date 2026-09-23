@@ -282,7 +282,7 @@ def check_commands(repo, cmd, line, rel, out, scripts=True):
                                    "no \"%s\" target in %s" % (t, "Makefile" if tool == "make" else "justfile")))
     for b in repo.bins:
         for m in re.finditer(r"(?:^|[\s;&|(])%s((?:\s+\S+)*)" % re.escape(b), cmd):
-            args = re.sub(r"'[^']*'|\"[^\"]*\"", " ", m.group(1))  # flags inside quotes belong to other programs
+            args = re.sub(r"'[^']*'|\"[^\"]*\"", " ", m.group(1))  # flags inside quotes belong to other programs. teeth: ignore — group(0) only adds the tool name; equivalent
             for flag in RE_FLAG.findall(args):
                 if flag in ("--help", "--version"):
                     continue
