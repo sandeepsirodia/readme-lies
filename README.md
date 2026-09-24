@@ -112,4 +112,17 @@ Tests map to [SPEC.md](SPEC.md). `TestNoFalsePositives` holds one regression tes
 
 </details>
 
+## Prior art, and what's new here
+
+- **[lychee](https://github.com/lycheeverse/lychee)** checks URLs (readme-lies deliberately doesn't).
+- **[markdown-link-check](https://github.com/tcort/markdown-link-check)** and **[remark-validate-links](https://github.com/remarkjs/remark-validate-links)** check local links and headings. If that's all you need, they're mature choices.
+
+readme-lies goes past links, to the **claims** docs make about the code:
+- package scripts and make/just targets
+- file paths in inline code
+- functions that were renamed away (via git history)
+- your CLI's own flags
+
+It also handles the anchor rules of docs sites (VitePress, Docusaurus, mkdocs), not just GitHub's.
+
 <p align="center"><sub>MIT © Sandeep Sirodia · Found a lie in your own README? A ⭐ is a nice way to say thanks.</sub></p>
