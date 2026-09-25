@@ -51,7 +51,7 @@ docs/api.md:30: `createClient()` — `createClient` is not in the code (renamed 
 
 ## It already found real bugs
 
-<p align="center"><img src="assets/httpx.svg" alt="readme-lies on encode/httpx: 7 links to headings that no longer exist" width="820"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/sandeepsirodia/readme-lies/main/assets/httpx.svg" alt="readme-lies on encode/httpx: 7 links to headings that no longer exist" width="820"></p>
 
 I pointed it at 27 popular repositories and checked every finding by hand. These are live on `main` as I write this:
 
