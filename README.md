@@ -82,7 +82,7 @@ Lies show up as red annotations right on the PR diff, the moment someone renames
 Or just run it:
 
 ```bash
-uvx --from git+https://github.com/sandeepsirodia/readme-lies readme-lies
+uvx readme-lies
 ```
 
 ## Built to not cry wolf
